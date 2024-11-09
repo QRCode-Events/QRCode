@@ -16,7 +16,6 @@ import java.util.List;
 
 public class ListaParticipantes extends AppCompatActivity {
 
-    //Variaveis
     private RecyclerView recyclerView;
     private ScannedPersonAdapter adapter;
     private CadastroDbHelper dbHelper;
