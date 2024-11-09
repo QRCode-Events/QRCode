@@ -19,5 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Passeio"
+rootProject.name = "QrCodeTeste"
 include(":app")
