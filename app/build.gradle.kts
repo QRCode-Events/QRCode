@@ -3,12 +3,12 @@ plugins {
 }
 
 android {
-    namespace = "com.example.passeio"
+    namespace = "br.com.edu.unicid.qrcodeteste"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.passeio"
-        minSdk = 19
+        applicationId = "br.com.edu.unicid.qrcodeteste"
+        minSdk = 24
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -32,7 +32,7 @@ android {
 }
 
 dependencies {
-
+    implementation(libs.zxing.android.embedded)
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
