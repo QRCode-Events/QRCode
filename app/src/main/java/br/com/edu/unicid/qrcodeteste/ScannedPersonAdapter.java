@@ -1,5 +1,6 @@
 package br.com.edu.unicid.qrcodeteste;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,8 +43,13 @@ public class ScannedPersonAdapter extends RecyclerView.Adapter<ScannedPersonAdap
     }
 
     public void updateList(List<ScannedPerson> newScannedPeople) {
-        this.scannedPeople = newScannedPeople;
+        Log.d("ScannedPersonAdapter", "updateList called with " + newScannedPeople.size() + " scanned people");
+
+        this.scannedPeople.clear(); // Clear the existing list
+        this.scannedPeople.addAll(newScannedPeople); // Add the new filtered list
         notifyDataSetChanged();
+
+        Log.d("ScannedPersonAdapter", "Adapter now contains " + scannedPeople.size() + " scanned people");
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

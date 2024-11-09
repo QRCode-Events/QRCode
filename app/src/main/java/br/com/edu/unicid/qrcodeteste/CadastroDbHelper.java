@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
 public class CadastroDbHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "cadastro.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
     public static final String TABLE_NAME = "registros";
     public static final String COLUMN_ID = "_id";
@@ -21,12 +22,7 @@ public class CadastroDbHelper extends SQLiteOpenHelper {
     public static final String COLUMN_QR_CODE = "qr_code";
     public static final String COLUMN_EMAIL = "email";
     public static final String COLUMN_SENHA = "senha";
-
-    private static final String SQL_CREATE_ENTRIES =
-            "CREATE TABLE " + TABLE_NAME + " (" +
-                    COLUMN_ID + " INTEGER PRIMARY KEY," +
-                    COLUMN_NOME + " TEXT," +
-                    COLUMN_DATA_NASCIMENTO + " TEXT)";
+    public static final String COLUMN_SCANNED = "scanned";
 
     public CadastroDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -34,22 +30,23 @@ public class CadastroDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String SQL_CREATE_ENTRIES ="CREATE TABLE " + TABLE_NAME + " (" +
+        String SQL_CREATE_ENTRIES = "CREATE TABLE " + TABLE_NAME + " (" +
                 COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 COLUMN_NOME + " TEXT," +
                 COLUMN_DATA_NASCIMENTO + " TEXT," +
                 COLUMN_QR_CODE + " TEXT," +
-                COLUMN_EMAIL + " TEXT," + // Add email column
-                COLUMN_SENHA + " TEXT)"; // Add senha column
+                COLUMN_EMAIL + " TEXT," +
+                COLUMN_SENHA + " TEXT," +
+                COLUMN_SCANNED + " INTEGER DEFAULT 0)"; // Include scanned column
         db.execSQL(SQL_CREATE_ENTRIES);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // This database is only a cache for online data, so its upgrade policy is
-        // to simply to discard the data and start over
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
-        onCreate(db);
+        if (oldVersion < newVersion) {
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+            onCreate(db); // Recreate the table with the new schema
+        }
     }
 
     // Method to insert a new registration
@@ -58,9 +55,10 @@ public class CadastroDbHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(COLUMN_NOME, nome);
         values.put(COLUMN_DATA_NASCIMENTO, dataNascimento);
-        values.put(COLUMN_QR_CODE, qrCode);
-        values.put(COLUMN_EMAIL, email); // Store email
-        values.put(COLUMN_SENHA, senha); // Store senha
+        values.put(COLUMN_QR_CODE, qrCode); // Assuming qrCode is a String
+        values.put(COLUMN_EMAIL, email);
+        values.put(COLUMN_SENHA, senha);
+        values.put(COLUMN_SCANNED, 0); // Set scanned to 0 (unscanned)
         return db.insert(TABLE_NAME, null, values);
     }
 
@@ -68,12 +66,6 @@ public class CadastroDbHelper extends SQLiteOpenHelper {
     public Cursor getRegistroById(long id) {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.query(TABLE_NAME, null, COLUMN_ID + "=?", new String[]{String.valueOf(id)}, null, null, null);
-    }
-
-    public Cursor getRegistroByNomeAndDataNascimento(String nome, String dataNascimento) {
-        SQLiteDatabase db = this.getReadableDatabase();String selection = COLUMN_NOME + " = ? AND " + COLUMN_DATA_NASCIMENTO + " = ?";
-        String[] selectionArgs = {nome, dataNascimento};
-        return db.query(TABLE_NAME, null, selection, selectionArgs, null, null, null);
     }
 
     // Method to get QR code data by email
@@ -101,45 +93,43 @@ public class CadastroDbHelper extends SQLiteOpenHelper {
 
     public void addScannedPerson(String nome, String dataNascimento) {
         SQLiteDatabase db = this.getWritableDatabase();
-
-        // Check if the user already exists
-        Cursor cursor = db.query(TABLE_NAME, null, COLUMN_NOME + " =? AND " + COLUMN_DATA_NASCIMENTO + " = ?",
-                new String[]{nome, dataNascimento}, null, null, null);
-
-        if (cursor.moveToFirst()) {
-            // User already exists, update the existing record
-            ContentValues values = new ContentValues();
-            values.put(COLUMN_NOME, nome);
-            values.put(COLUMN_DATA_NASCIMENTO, dataNascimento);
-            db.update(TABLE_NAME, values, COLUMN_NOME + " = ? AND " + COLUMN_DATA_NASCIMENTO + " = ?",
-                    new String[]{nome, dataNascimento});
-        } else {
-            // User does not exist, insert a new record
-            ContentValues values = new ContentValues();
-            values.put(COLUMN_NOME, nome);
-            values.put(COLUMN_DATA_NASCIMENTO, dataNascimento);
-            db.insert(TABLE_NAME, null, values);
-        }
-
-        cursor.close();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_SCANNED, 1); // Set scanned to1 (scanned)
+        db.update(TABLE_NAME, values, COLUMN_NOME + " = ? AND " + COLUMN_DATA_NASCIMENTO + " = ?", new String[]{nome, dataNascimento});
         db.close();
     }
 
     public List<ScannedPerson> getAllScannedPeople() {
         List<ScannedPerson> scannedPeople = new ArrayList<>();
-        String selectQuery = "SELECT  * FROM " + TABLE_NAME;
+        String selectQuery = "SELECT *FROM " + TABLE_NAME + " WHERE " + COLUMN_SCANNED + " = 1"; // Filter by scanned column
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
+
+        Log.d("CadastroDbHelper", "getAllScannedPeople called");
+        Log.d("CadastroDbHelper", "SQL query: " + selectQuery);
+        Log.d("CadastroDbHelper", "Cursor count: " + cursor.getCount());
+
         if (cursor.moveToFirst()) {
             do {
                 long id = cursor.getLong(cursor.getColumnIndexOrThrow(COLUMN_ID));
                 String nome = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NOME));
                 String dataNascimento = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DATA_NASCIMENTO));
-                scannedPeople.add(new ScannedPerson(id, nome, dataNascimento, null, null, null));
+                String qrCode = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_QR_CODE));
+                String email = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_EMAIL));
+                String senha = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_SENHA));
+                int scanned = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_SCANNED));
+
+                scannedPeople.add(new ScannedPerson(id, nome, dataNascimento, qrCode, email, senha, scanned)); // Include all properties
+
+                Log.d("CadastroDbHelper", "Added scanned person: " + nome + ", " + dataNascimento);
             } while (cursor.moveToNext());
         }
+
         cursor.close();
         db.close();
+
+        Log.d("CadastroDbHelper", "Returning " + scannedPeople.size() + " scanned people");
+
         return scannedPeople;
     }
 }
