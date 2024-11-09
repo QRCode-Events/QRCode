@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class Organizador extends AppCompatActivity {
     Button btnEscanear;
     Button btnParticipantes;
+    private Button btnVoltar2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +20,7 @@ public class Organizador extends AppCompatActivity {
 
         btnEscanear = findViewById(R.id.btnEscanear);
         btnParticipantes = findViewById(R.id.btnParticipantes);
+        btnVoltar2 = findViewById(R.id.btnVoltar2);
 
         btnEscanear.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -33,6 +35,15 @@ public class Organizador extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Organizador.this, ListaParticipantes.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        btnVoltar2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Organizador.this, TelaPrincipal.class);
                 startActivity(intent);
                 finish();
             }

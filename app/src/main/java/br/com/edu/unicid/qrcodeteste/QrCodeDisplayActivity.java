@@ -1,8 +1,11 @@
 package br.com.edu.unicid.qrcodeteste;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -17,6 +20,7 @@ import com.journeyapps.barcodescanner.BarcodeEncoder;
 public class QrCodeDisplayActivity extends AppCompatActivity {
 
     private ImageView imgQrCode;
+    private Button btnVoltar3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +28,7 @@ public class QrCodeDisplayActivity extends AppCompatActivity {
         setContentView(R.layout.qr_code); // Create this layout file
 
         imgQrCode = findViewById(R.id.imgQrCode);
+        btnVoltar3 = findViewById(R.id.btnVoltar3);
 
         String qrCodeData = getIntent().getStringExtra("qrCodeData");
 
@@ -41,6 +46,15 @@ public class QrCodeDisplayActivity extends AppCompatActivity {
             Toast.makeText(this, "QR Code data not found", Toast.LENGTH_SHORT).show();
             finish(); // Example: Finish the activity
         }
+
+        btnVoltar3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(QrCodeDisplayActivity.this, TelaPrincipal.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     private Bitmap gerarQRCode(String conteudo) {

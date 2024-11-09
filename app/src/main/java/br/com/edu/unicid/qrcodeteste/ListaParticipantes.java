@@ -1,7 +1,10 @@
 package br.com.edu.unicid.qrcodeteste;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -15,17 +18,23 @@ public class ListaParticipantes extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ScannedPersonAdapter adapter;
     private CadastroDbHelper dbHelper;
+    private Button btnSair;
+    private Button btnAdicionar;
+    private static final int SCAN_REQUEST_CODE =1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.item_scanned_person);
+        setContentView(R.layout.lista_participantes);
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new ScannedPersonAdapter(new ArrayList<>());
         recyclerView.setAdapter(adapter);
         dbHelper = new CadastroDbHelper(this);
+        btnSair = findViewById(R.id.btnSair);
+        btnAdicionar = findViewById(R.id.btnAdicionar);
+
 
         // Initialize RecyclerView and adapter
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -34,26 +43,39 @@ public class ListaParticipantes extends AppCompatActivity {
 
         // Load scanned people from the database
         loadScannedPeople();
+
+        btnSair.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ListaParticipantes.this, Organizador.class);
+                startActivity(intent);
+                finish(); // Add this line to close ListaParticipantes
+            }
+        });
+
+        btnAdicionar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Start ScanActivity for a new scan
+                Intent intent = new Intent(ListaParticipantes.this, ScanActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == SCAN_REQUEST_CODE && resultCode == RESULT_OK) {
+            // Refresh the list after a successful scan
+            loadScannedPeople();
+        }
     }
 
     private void loadScannedPeople() {
-        List<ScannedPerson> scannedPeople = new ArrayList<>();
-        Cursor cursor = dbHelper.getAllScannedPeople();
-
-        if (cursor != null && cursor.moveToFirst()) {
-            do {
-                long id = cursor.getLong(cursor.getColumnIndexOrThrow(CadastroDbHelper.COLUMN_ID));
-                String nome = cursor.getString(cursor.getColumnIndexOrThrow(CadastroDbHelper.COLUMN_NOME));
-                String dataNascimento = cursor.getString(cursor.getColumnIndexOrThrow(CadastroDbHelper.COLUMN_DATA_NASCIMENTO));
-
-                scannedPeople.add(new ScannedPerson(id, nome, dataNascimento, null, null, null)); // Assuming email, senha, qrCode are null
-            } while (cursor.moveToNext());
-
-            cursor.close();
-        }
-
-        // Update the adapter with the scanned people list
-        adapter.updateList(scannedPeople); // Assuming you have an updateList() method in your adapter
-        adapter.notifyDataSetChanged();
+        List<ScannedPerson> scannedPeople = dbHelper.getAllScannedPeople();
+        adapter.updateList(scannedPeople);
+        adapter.notifyDataSetChanged(); // Refresh the RecyclerView
     }
 }
