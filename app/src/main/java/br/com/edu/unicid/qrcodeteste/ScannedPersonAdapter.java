@@ -21,17 +21,19 @@ public class ScannedPersonAdapter extends RecyclerView.Adapter<ScannedPersonAdap
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_scanned_person, parent, false);
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_person, parent, false); // Inflate item_person.xml
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, int position) {
         ScannedPerson scannedPerson = scannedPeople.get(position);
-        holder.txtNome.setText(scannedPerson.nome);
-        holder.txtDataNascimento.setText(scannedPerson.dataNascimento);
-        holder.txtId.setText(String.valueOf(scannedPerson.id));
+
+        // Set the complete text including prefixes
+        holder.txtNome.setText("Nome: " + scannedPerson.getNome());
+        holder.txtDataNascimento.setText("Data de nascimento: " + scannedPerson.getDataNascimento());
+        holder.txtId.setText("ID: " + scannedPerson.getId());
     }
 
     @Override

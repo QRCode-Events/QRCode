@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class Login extends AppCompatActivity {
     EditText edtEmail, edtSenha;
     private Button btnLogin;
+    private Button btnVoltar1;
     private CadastroDbHelper dbHelper;
 
     @Override
@@ -27,6 +28,7 @@ public class Login extends AppCompatActivity {
         edtEmail = findViewById(R.id.edtEmail);
         edtSenha = findViewById(R.id.edtSenha);
         btnLogin = findViewById(R.id.btnLogin);
+        btnVoltar1 = findViewById(R.id.btnVoltar1);
 
         dbHelper = new CadastroDbHelper(this); // Initialize dbHelper here
 
@@ -34,6 +36,15 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 fazerLogin();
+            }
+        });
+
+        btnVoltar1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Login.this, TelaPrincipal.class);
+                startActivity(intent);
+                finish();
             }
         });
     }

@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,6 +18,8 @@ public class ScanActivity extends AppCompatActivity {
 
     private TextView txtNome, txtDataNascimento, txtId;
     private CadastroDbHelper dbHelper;
+    private Button btnSair;
+    private Button btnAdicionar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,11 +29,31 @@ public class ScanActivity extends AppCompatActivity {
         txtNome = findViewById(R.id.txtNome);
         txtDataNascimento = findViewById(R.id.txtDataNascimento);
         txtId = findViewById(R.id.txtId);
+        btnSair = findViewById(R.id.btnSair);
+        btnAdicionar = findViewById(R.id.btnAdicionar);
 
         dbHelper = new CadastroDbHelper(this);
 
         // Initiate QR code scan
         new IntentIntegrator(this).initiateScan();
+
+        btnSair.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ScanActivity.this, Organizador.class);
+                startActivity(intent);
+                finish(); // Add this line to close ListaParticipantes
+            }
+        });
+
+        btnAdicionar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Start ScanActivity for a new scan
+                Intent intent = new Intent(ScanActivity.this, ScanActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -37,7 +61,7 @@ public class ScanActivity extends AppCompatActivity {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if (result != null) {
             if (result.getContents() == null) {
-                Toast.makeText(this, "Scaneamento cancelado", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Escaneamento cancelado", Toast.LENGTH_LONG).show();
             } else {
                 // QR code scanned successfully
                 String qrCodeData = result.getContents();
@@ -72,6 +96,11 @@ public class ScanActivity extends AppCompatActivity {
                     // Add TextView for ID in your layout (e.g., txtId)
                     txtId.setText("ID: " + id); // Display ID
 
+                    Intent resultIntent = new Intent();
+                    resultIntent.putExtra("scannedData", qrCodeData);
+
+                    dbHelper.addScannedPerson(nome, dataNascimento);
+
                     // 6. Close the cursor
                     cursor.close();
                 } else {
@@ -80,7 +109,7 @@ public class ScanActivity extends AppCompatActivity {
                 }
             } else {
                 // 8. If the QR code data format is invalid, display "Invalid QR Code format"
-                Toast.makeText(this, "Invalid QRCode format", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "QRCode Inválido", Toast.LENGTH_SHORT).show();
             }
         } catch (Exception e) {
             // 9. Handle any unexpected exceptions

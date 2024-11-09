@@ -6,6 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CadastroDbHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "cadastro.db";
@@ -18,6 +21,12 @@ public class CadastroDbHelper extends SQLiteOpenHelper {
     public static final String COLUMN_QR_CODE = "qr_code";
     public static final String COLUMN_EMAIL = "email";
     public static final String COLUMN_SENHA = "senha";
+
+    private static final String SQL_CREATE_ENTRIES =
+            "CREATE TABLE " + TABLE_NAME + " (" +
+                    COLUMN_ID + " INTEGER PRIMARY KEY," +
+                    COLUMN_NOME + " TEXT," +
+                    COLUMN_DATA_NASCIMENTO + " TEXT)";
 
     public CadastroDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -90,23 +99,47 @@ public class CadastroDbHelper extends SQLiteOpenHelper {
         String[] selectionArgs = {email};
         return db.query(TABLE_NAME, null, selection, selectionArgs, null, null, null);}
 
-    public Cursor getAllScannedPeople() {
-        SQLiteDatabase db = getReadableDatabase();
-        return db.query(
-                TABLE_NAME,
-                null, // Select all columns
-                null, // No WHERE clause
-                null, // No selection arguments
-                null, // No GROUP BY
-                null, // No HAVING
-                null // NoORDER BY
-        );
+    public void addScannedPerson(String nome, String dataNascimento) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // Check if the user already exists
+        Cursor cursor = db.query(TABLE_NAME, null, COLUMN_NOME + " =? AND " + COLUMN_DATA_NASCIMENTO + " = ?",
+                new String[]{nome, dataNascimento}, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            // User already exists, update the existing record
+            ContentValues values = new ContentValues();
+            values.put(COLUMN_NOME, nome);
+            values.put(COLUMN_DATA_NASCIMENTO, dataNascimento);
+            db.update(TABLE_NAME, values, COLUMN_NOME + " = ? AND " + COLUMN_DATA_NASCIMENTO + " = ?",
+                    new String[]{nome, dataNascimento});
+        } else {
+            // User does not exist, insert a new record
+            ContentValues values = new ContentValues();
+            values.put(COLUMN_NOME, nome);
+            values.put(COLUMN_DATA_NASCIMENTO, dataNascimento);
+            db.insert(TABLE_NAME, null, values);
+        }
+
+        cursor.close();
+        db.close();
     }
 
-    public void updateQrCode(long id, String qrCodeData) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_QR_CODE, qrCodeData);
-        db.update(TABLE_NAME, values, COLUMN_ID + " = ?", new String[]{String.valueOf(id)});
+    public List<ScannedPerson> getAllScannedPeople() {
+        List<ScannedPerson> scannedPeople = new ArrayList<>();
+        String selectQuery = "SELECT  * FROM " + TABLE_NAME;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                long id = cursor.getLong(cursor.getColumnIndexOrThrow(COLUMN_ID));
+                String nome = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NOME));
+                String dataNascimento = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DATA_NASCIMENTO));
+                scannedPeople.add(new ScannedPerson(id, nome, dataNascimento, null, null, null));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return scannedPeople;
     }
 }

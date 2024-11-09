@@ -23,6 +23,7 @@ public class CadastroActivity extends AppCompatActivity {
 
     private EditText edtNome, edtDataNascimento, edtEmail, edtSenha;
     private Button btnCadastrar;
+    private Button btnVoltar5;
     private ImageView imgQrCode;
     private CadastroDbHelper dbHelper;
 
@@ -38,6 +39,7 @@ public class CadastroActivity extends AppCompatActivity {
         edtSenha = findViewById(R.id.edtSenha);
         btnCadastrar = findViewById(R.id.btnCadastrar);
         imgQrCode = findViewById(R.id.imgQrCode);
+        btnVoltar5 = findViewById(R.id.btnVoltar5);
 
         dbHelper = new CadastroDbHelper(this);
 
@@ -45,7 +47,24 @@ public class CadastroActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 cadastrarUsuario();
-                Intent intent = new Intent(CadastroActivity.this, Login.class); //Pode ser que dê erro aqui
+
+                // Only start LoginActivity if cadastrarUsuario() was successful (no empty fields)
+                String nome = edtNome.getText().toString();
+                String dataNascimento = edtDataNascimento.getText().toString();
+                String email = edtEmail.getText().toString();
+                String senha = edtSenha.getText().toString();
+
+                if (!nome.isEmpty()&& !dataNascimento.isEmpty() && !email.isEmpty() && !senha.isEmpty()) {
+                    Intent intent = new Intent(CadastroActivity.this, Login.class);
+                    startActivity(intent);
+                }
+            }
+        });
+
+        btnVoltar5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CadastroActivity.this, TelaPrincipal.class); //Pode ser que dê erro aqui
                 startActivity(intent);
             }
         });

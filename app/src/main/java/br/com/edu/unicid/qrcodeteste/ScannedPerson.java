@@ -1,12 +1,13 @@
-package br.com.edu.unicid.qrcodeteste; // Replace with your package name
+package br.com.edu.unicid.qrcodeteste;
 
 public class ScannedPerson {
 
-    public long id;
-    public String nome;
-    public String dataNascimento;
-    public String email;public String senha;
-    public String qrCode;
+    private long id;
+    private String nome;
+    private String dataNascimento;
+    private String email;
+    private String senha;
+    private String qrCode;
 
     public ScannedPerson(long id, String nome, String dataNascimento, String email, String senha, String qrCode) {
         this.id = id;
@@ -15,5 +16,30 @@ public class ScannedPerson {
         this.email = email;
         this.senha = senha;
         this.qrCode = qrCode;
+    }
+
+    // Getter methods
+    public long getId() {
+        return id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public String getDataNascimento() {
+        return dataNascimento;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public String getQrCode() {
+        return qrCode;
     }
 }
