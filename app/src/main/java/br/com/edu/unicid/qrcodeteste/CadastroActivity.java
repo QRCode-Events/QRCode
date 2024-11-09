@@ -2,6 +2,7 @@ package br.com.edu.unicid.qrcodeteste;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
@@ -81,36 +82,49 @@ public class CadastroActivity extends AppCompatActivity {
             return;
         }
 
-        // Store data in the database first to get the ID
-        long newRowId = dbHelper.inserirRegistro(nome, dataNascimento, null, email, senha); // Pass null for qrCodeData initially
+        String qrCodeData = "";
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.beginTransaction(); // Start transaction
 
-        if (newRowId != -1) {
-            // Generate QR code with ID, name, and date of birth
-            String qrCodeData= newRowId + "|" + nome + "|" + dataNascimento; // Include ID in qrCodeData
-            try {
-                Bitmap qrCodeBitmap = gerarQRCode(qrCodeData);
+        try {
+            long newRowId = dbHelper.inserirRegistro(nome, dataNascimento, null, email, senha);
+
+            if (newRowId != -1) {
+                // Generate QR code with ID, name, and date of birth
+                qrCodeData = newRowId + "|" + nome + "|" +dataNascimento;// Include ID in qrCodeData
+                Bitmap qrCodeBitmap = gerarQRCode(qrCodeData); // Now qrCodeData is defined
                 imgQrCode.setImageBitmap(qrCodeBitmap);
 
                 // Update the database with the generated QR code data
                 ContentValues values = new ContentValues();
                 values.put(CadastroDbHelper.COLUMN_QR_CODE, qrCodeData);
-                dbHelper.getWritableDatabase().update(CadastroDbHelper.TABLE_NAME, values, CadastroDbHelper.COLUMN_ID + " = ?", new String[]{String.valueOf(newRowId)});
+                int updatedRows = db.update(CadastroDbHelper.TABLE_NAME, values, CadastroDbHelper.COLUMN_ID + " = ?", new String[]{String.valueOf(newRowId)});
 
-                Toast.makeText(this, "Cadastro realizado com sucesso!", Toast.LENGTH_SHORT).show();
+                if (updatedRows > 0) {
+                    db.setTransactionSuccessful(); // Mark transaction as successful
+                    Toast.makeText(this, "Cadastro realizado com sucesso!", Toast.LENGTH_SHORT).show();
 
-                // Start QrCodeDisplayActivity here, after successful insertion
-                Intent intent = new Intent(CadastroActivity.this, QrCodeDisplayActivity.class);
-                intent.putExtra("qrCodeData", qrCodeData); // Pass qrCodeData as a string
-                startActivity(intent);
+                    // Start QrCodeDisplayActivity here, after successful insertion
+                    Intent intent = new Intent(CadastroActivity.this, QrCodeDisplayActivity.class);
+                    intent.putExtra("qrCodeData", qrCodeData); // Pass qrCodeData as a string
+                    startActivity(intent);
 
-                // Then start LoginActivity
-                Intent loginIntent = new Intent(CadastroActivity.this, Login.class);
-                startActivity(loginIntent);
-            } catch (Exception e) {Toast.makeText(this, "Erro ao cadastrar: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.e("CadastroActivity", "Error during registration", e); // Log the exception
+                    // Then start LoginActivity
+                    Intent loginIntent = new Intent(CadastroActivity.this, Login.class);
+                    startActivity(loginIntent);
+                } else {
+                    // Handle update failure
+                    Toast.makeText(this, "Erro ao atualizar o QR Code no banco de dados", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                // Handle insertion failure
+                Toast.makeText(this, "Erro ao inserir no banco de dados", Toast.LENGTH_SHORT).show();
             }
-        } else {
-            // ... (error handling) ...
+        } catch (Exception e) {
+            Toast.makeText(this, "Erro ao cadastrar: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Log.e("CadastroActivity", "Error during registration", e); // Log the exception
+        } finally {
+            db.endTransaction(); // End transaction
         }
     }
 

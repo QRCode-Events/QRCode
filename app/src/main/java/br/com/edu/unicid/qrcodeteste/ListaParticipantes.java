@@ -2,6 +2,7 @@ package br.com.edu.unicid.qrcodeteste;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -74,8 +75,10 @@ public class ListaParticipantes extends AppCompatActivity {
     }
 
     private void loadScannedPeople() {
+        // Use getAllScannedPeople() to get the filtered list
         List<ScannedPerson> scannedPeople = dbHelper.getAllScannedPeople();
+
         adapter.updateList(scannedPeople);
-        adapter.notifyDataSetChanged(); // Refresh the RecyclerView
+        adapter.notifyDataSetChanged();
     }
 }

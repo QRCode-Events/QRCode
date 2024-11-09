@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.zxing.Result;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -33,8 +34,6 @@ public class ScanActivity extends AppCompatActivity {
         btnAdicionar = findViewById(R.id.btnAdicionar);
 
         dbHelper = new CadastroDbHelper(this);
-
-        // Initiate QR code scan
         new IntentIntegrator(this).initiateScan();
 
         btnSair.setOnClickListener(new View.OnClickListener() {
