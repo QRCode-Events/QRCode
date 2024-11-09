@@ -34,7 +34,6 @@ public class ListaParticipantes extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         dbHelper = new CadastroDbHelper(this);
         btnSair = findViewById(R.id.btnSair);
-        btnAdicionar = findViewById(R.id.btnAdicionar);
 
 
         // Initialize RecyclerView and adapter
@@ -51,15 +50,6 @@ public class ListaParticipantes extends AppCompatActivity {
                 Intent intent = new Intent(ListaParticipantes.this, Organizador.class);
                 startActivity(intent);
                 finish(); // Add this line to close ListaParticipantes
-            }
-        });
-
-        btnAdicionar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Start ScanActivity for a new scan
-                Intent intent = new Intent(ListaParticipantes.this, ScanActivity.class);
-                startActivity(intent);
             }
         });
     }
