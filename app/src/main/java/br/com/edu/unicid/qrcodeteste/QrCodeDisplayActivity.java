@@ -16,11 +16,12 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class QrCodeDisplayActivity extends AppCompatActivity {
 
     private ImageView imgQrCode;
-    private Button btnVoltar3;
+    private FloatingActionButton btnVoltar3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

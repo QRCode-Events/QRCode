@@ -6,6 +6,17 @@
     android:layout_height="match_parent"
     android:background="#1F2C34">
 
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="157dp"
+        android:layout_height="140dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.179"
+        app:srcCompat="@drawable/bilhetebranco" />
+
     <Button
         android:id="@+id/btnParticipantes"
         android:layout_width="239dp"
@@ -34,16 +45,19 @@
         app:layout_constraintTop_toBottomOf="@+id/btnParticipantes"
         app:layout_constraintVertical_bias="0.0" />
 
-    <Button
-        android:id="@+id/btnVoltar2"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnVoltar5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/border_button"
-        android:text="Voltar"
-        android:textColor="#FFFFFF"
+        android:clickable="true"
+        app:backgroundTint="#1F2C34"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.045"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.023"
+        app:srcCompat="@drawable/seta_esquerda"
+        app:tint="#FFFF" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,23 +1,21 @@
 package br.com.edu.unicid.qrcodeteste;
 
-import static br.com.edu.unicid.qrcodeteste.CadastroDbHelper.COLUMN_EMAIL;
-import static br.com.edu.unicid.qrcodeteste.CadastroDbHelper.TABLE_NAME;
-
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class Login extends AppCompatActivity {
     EditText edtEmail, edtSenha;
     private Button btnLogin;
-    private Button btnVoltar1;
+    private FloatingActionButton btnVoltar;
     private CadastroDbHelper dbHelper;
 
     @Override
@@ -28,7 +26,7 @@ public class Login extends AppCompatActivity {
         edtEmail = findViewById(R.id.edtEmail);
         edtSenha = findViewById(R.id.edtSenha);
         btnLogin = findViewById(R.id.btnLogin);
-        btnVoltar1 = findViewById(R.id.btnVoltar1);
+        btnVoltar = findViewById(R.id.btnVoltar5);
 
         dbHelper = new CadastroDbHelper(this); // Initialize dbHelper here
 
@@ -39,7 +37,7 @@ public class Login extends AppCompatActivity {
             }
         });
 
-        btnVoltar1.setOnClickListener(new View.OnClickListener() {
+        btnVoltar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Login.this, TelaPrincipal.class);

@@ -19,73 +19,9 @@
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.758" />
-
-    <EditText
-        android:id="@+id/edtNome"
-        android:layout_width="314dp"
-        android:layout_height="66dp"
-        android:ems="10"
-        android:fontFamily="sans-serif-medium"
-        android:hint="Nome"
-        android:inputType="text"
-        android:textColorHint="#FFFFFF"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.474"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.342" />
-
-    <EditText
-        android:id="@+id/edtDataNascimento"
-        android:layout_width="314dp"
-        android:layout_height="66dp"
-        android:layout_marginBottom="400dp"
-        android:ems="10"
-        android:fontFamily="sans-serif-medium"
-        android:hint="Data de Nascimento"
-        android:inputType="text"
-        android:textColorHint="#FFFFFF"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.474"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtNome"
-        app:layout_constraintVertical_bias="0.107" />
-
-    <EditText
-        android:id="@+id/edtEmail"
-        android:layout_width="314dp"
-        android:layout_height="66dp"
-        android:layout_marginTop="8dp"
-        android:fontFamily="sans-serif-medium"
-        android:hint="Email"
-        android:inputType="textEmailAddress"
-        android:textColorHint="#FFFFFF"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.474"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtDataNascimento" />
-
-    <EditText
-        android:id="@+id/edtSenha"
-        android:layout_width="314dp"
-        android:layout_height="66dp"
-        android:layout_marginTop="8dp"
-        android:fontFamily="sans-serif-medium"
-        android:hint="Senha"
-        android:inputType="textPassword"
-        android:textColorHint="#FFFFFF"
-        android:textSize="20sp"
-        app:layout_constraintTop_toBottomOf="@+id/edtEmail"
-        tools:layout_editor_absoluteX="46dp" />
+        app:layout_constraintVertical_bias="0.712" />
 
     <ImageView
         android:id="@+id/imgQrCode"
@@ -99,23 +35,75 @@
         app:layout_constraintTop_toBottomOf="@+id/btnCadastrar"
         app:layout_constraintVertical_bias="0.695" />
 
-    <Button
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btnVoltar5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="4dp"
-        android:background="@drawable/border_button"
-        android:text="Voltar"
-        android:textColor="#FFFFFF"
+        android:clickable="true"
+        app:backgroundTint="#1F2C34"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.045"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.023"
+        app:srcCompat="@drawable/seta_esquerda"
+        app:tint="#FFFF" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="108dp"
+        android:layout_height="107dp"
+        android:layout_marginTop="64dp"
+        android:background="@drawable/bilhetebranco"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@drawable/bilhetebranco" />
+
+    <EditText
+        android:id="@+id/edtDataNascimento"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:background="@drawable/campos"
+        android:fontFamily="@font/alfa_slab_one"
+        android:gravity="center"
+        android:hint="Data de Nascimento"
+        android:inputType="text"
+        android:textColor="#E4F7FF"
+        android:textColorHint="#FFFFFF"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.54"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edtNome"
+        app:layout_constraintVertical_bias="0.044" />
+
+    <EditText
+        android:id="@+id/edtSenha"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/campos"
+        android:fontFamily="@font/alfa_slab_one"
+        android:gravity="center"
+        android:hint="Senha"
+        android:inputType="textPassword"
+        android:textColor="#E4F7FF"
+        android:textColorHint="#FFFFFF"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.54"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edtEmail" />
 
     <TextView
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-light"
+        android:fontFamily="@font/alfa_slab_one"
         android:text="Crie sua conta:"
         android:textColor="#FFFFFF"
         android:textSize="34sp"
@@ -123,16 +111,43 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.928" />
+        app:layout_constraintVertical_bias="0.938" />
 
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="108dp"
-        android:layout_height="107dp"
-        android:background="@drawable/bilhete"
+    <EditText
+        android:id="@+id/edtEmail"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/campos"
+        android:fontFamily="@font/alfa_slab_one"
+        android:gravity="center"
+        android:hint="Email"
+        android:inputType="textEmailAddress"
+        android:textColor="#E4F7FF"
+        android:textColorHint="#FFFFFF"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.54"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="52dp"
-        tools:srcCompat="@drawable/bilhetebranco" />
+        app:layout_constraintTop_toBottomOf="@+id/edtDataNascimento" />
+
+    <EditText
+        android:id="@+id/edtNome"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:background="@drawable/campos"
+        android:fontFamily="@font/alfa_slab_one"
+        android:gravity="center"
+        android:hint="Nome"
+        android:inputType="text"
+        android:textColor="#E4F7FF"
+        android:textColorHint="#FFFFFF"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.54"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.358" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

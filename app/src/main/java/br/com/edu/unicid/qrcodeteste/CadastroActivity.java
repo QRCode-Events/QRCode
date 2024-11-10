@@ -19,12 +19,14 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 
 public class CadastroActivity extends AppCompatActivity {
 
     private EditText edtNome, edtDataNascimento, edtEmail, edtSenha;
     private Button btnCadastrar;
-    private Button btnVoltar5;
+    private FloatingActionButton btnVoltar5;
     private ImageView imgQrCode;
     private CadastroDbHelper dbHelper;
 
@@ -65,8 +67,9 @@ public class CadastroActivity extends AppCompatActivity {
         btnVoltar5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(CadastroActivity.this, TelaPrincipal.class); //Pode ser que dê erro aqui
+                Intent intent = new Intent(CadastroActivity.this, TelaPrincipal.class);
                 startActivity(intent);
+                finish();
             }
         });
     }

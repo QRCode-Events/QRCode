@@ -4,14 +4,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ListAdapter;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class Organizador extends AppCompatActivity {
     Button btnEscanear;
     Button btnParticipantes;
-    private Button btnVoltar2;
+    private FloatingActionButton btnVoltar2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,7 +22,7 @@ public class Organizador extends AppCompatActivity {
 
         btnEscanear = findViewById(R.id.btnEscanear);
         btnParticipantes = findViewById(R.id.btnParticipantes);
-        btnVoltar2 = findViewById(R.id.btnVoltar2);
+        btnVoltar2 = findViewById(R.id.btnVoltar5);
 
         btnEscanear.setOnClickListener(new View.OnClickListener() {
             @Override
