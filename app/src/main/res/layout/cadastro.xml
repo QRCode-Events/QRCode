@@ -133,6 +133,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:layout_editor_absoluteY="52dp"
-        tools:srcCompat="@drawable/bilheteBranco" />
+        tools:srcCompat="@drawable/bilhetebranco" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
