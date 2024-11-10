@@ -40,7 +40,6 @@ public class CadastroDbHelper extends SQLiteOpenHelper {
                 COLUMN_SCANNED + " INTEGER DEFAULT 0)"; // Include scanned column
         db.execSQL(SQL_CREATE_ENTRIES);
     }
-
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if (oldVersion < newVersion) {
