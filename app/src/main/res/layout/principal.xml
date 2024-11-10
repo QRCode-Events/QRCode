@@ -30,7 +30,7 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/bilhete" />
+        app:srcCompat="@drawable/bilheteBranco" />
 
     <TextView
         android:id="@+id/textView2"
@@ -53,6 +53,7 @@
         android:layout_marginTop="60dp"
         android:background="@drawable/border_button"
         android:text="Entrar"
+        android:textColor="#FFFFFF"
         app:backgroundTint="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -77,6 +78,7 @@
         android:layout_marginTop="36dp"
         android:background="@drawable/border_button"
         android:text="Cadastrar"
+        android:textColor="#FFFFFF"
         app:backgroundTint="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -90,6 +92,7 @@
         android:layout_margin="16dp"
         android:background="@drawable/border_button"
         android:text="Staff"
+        android:textColor="#FFFFFF"
         app:backgroundTint="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"

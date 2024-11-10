@@ -6,7 +6,7 @@
     <!-- A borda do botão -->
     <stroke
         android:color="#FFFFFF"
-        android:width="4dp" />
+        android:width="2dp" />
 
     <!-- Bordas arredondadas (opcional) -->
     <corners android:radius="8dp" />
