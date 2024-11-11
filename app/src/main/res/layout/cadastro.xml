@@ -23,18 +23,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.712" />
 
-    <ImageView
-        android:id="@+id/imgQrCode"
-        android:layout_width="152dp"
-        android:layout_height="148dp"
-        android:src="@android:drawable/menuitem_background"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnCadastrar"
-        app:layout_constraintVertical_bias="0.695" />
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btnVoltar5"
         android:layout_width="wrap_content"
